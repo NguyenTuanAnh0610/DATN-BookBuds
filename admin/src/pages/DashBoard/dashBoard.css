@@ -1,0 +1,81 @@
+.container {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.chart-card {
+    width: 100%;
+    padding: 16px;
+  }
+  
+  .container {
+    width: 100%;
+    padding: 0 16px;
+  }
+.card_total{
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.03);
+    border-radius: 5px;
+    background: #fff;
+}
+
+.card_number{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.number_total{
+    color: #56606e;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.title_total{
+    color: #8a909d;
+    font-size: 15px;
+}
+
+.chart{
+    margin-top: 30px;
+}
+
+.title{
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.chart-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.chart-card {
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 48%;
+    margin: 10px;
+}
+
+.chart-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.chart-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.chart-card {
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px; 
+}
