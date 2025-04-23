@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\ShippingAddressController;
+use App\Http\Controllers\UserController;
+
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+*/
+
+// Shipping Addresses
+Route::get('/shipping-addresses', [ShippingAddressController::class, 'index']);
+Route::get('/shipping-addresses/user/{id}', [ShippingAddressController::class, 'getShippingAddressesByUserId']);
+Route::post('/shipping-addresses', [ShippingAddressController::class, 'store']);
+Route::put('/shipping-addresses/{id}', [ShippingAddressController::class, 'update']);
+Route::delete('/shipping-addresses/{id}', [ShippingAddressController::class, 'destroy']);
+
+// User Management
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout']);
+Route::post('/change-password', [UserController::class, 'changePassword'])->middleware('auth:sanctum');
+Route::post('/forgot-password', [UserController::class, 'forgotPassword']);
+
+Route::get('/profile', [UserController::class, 'profile']);
+Route::put('/profile', [UserController::class, 'updateProfile']);
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
+Route::put('/users/{id}', [UserController::class, 'update']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
+Route::get('/users/search', [UserController::class, 'search']);
