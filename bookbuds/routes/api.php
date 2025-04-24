@@ -41,3 +41,10 @@ Route::get('/users/search', [UserController::class, 'search']);
     Route::put('/cart/{id}', [CartController::class, 'updateQuantity']);
     Route::delete('/cart/{id}', [CartController::class, 'removeFromCart']);
     Route::delete('/cart', [CartController::class, 'clearCart']);
+    
+// Promotions
+Route::get('/promotions', [PromotionController::class, 'index']);
+Route::get('/promotions/{id}', [PromotionController::class, 'show']);
+Route::post('/promotions', [PromotionController::class, 'store']);
+Route::put('/promotions/{id}', [PromotionController::class, 'update']);
+Route::delete('/promotions/{id}', [PromotionController::class, 'destroy']);
