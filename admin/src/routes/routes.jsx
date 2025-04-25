@@ -22,50 +22,59 @@ const RouterURL = withRouter(() => {
             <PublicRoute exact path="/login">
                 <Login />
             </PublicRoute>
-            
+
         </div>
     )
-const DefaultContainer = () => ( 
-    
-    <PrivateRoute>
-    <Layout style={{ minHeight: '100vh' }}>
-        <Sidebar />
-        <Layout >
-            <Header />
-            <Content style={{ marginLeft: 230, width: 'calc(100% - 230px)', marginTop: 50 }}>
-                <PrivateRoute exact path="/dash-board">
-                    <Suspense>
-                        <DashBoard />
-                    </Suspense>
-                </PrivateRoute>         
-            </Content>
-            <Footer />
-        </Layout>
-    </Layout>
-</PrivateRoute >
-   
-)
+    const DefaultContainer = () => (
 
-return (
-    <div>
-        <Router>
-            <Switch>
-                <Route exact path="/">
-                    <LoginContainer />
-                </Route>
-                <Route exact path="/login">
-                    <LoginContainer />
-                </Route>
-                
-                <Route exact path="/dash-board">
-                    <DefaultContainer />
-                </Route>
-                
-                
-            </Switch>
-        </Router>
-    </div>
-)
+        <PrivateRoute>
+            <Layout style={{ minHeight: '100vh' }}>
+                <Sidebar />
+                <Layout >
+                    <Header />
+                    <Content style={{ marginLeft: 230, width: 'calc(100% - 230px)', marginTop: 50 }}>
+                        <PrivateRoute exact path="/dash-board">
+                            <Suspense>
+                                <DashBoard />
+                            </Suspense>
+                        </PrivateRoute>
+
+                        <PrivateRoute exact path="/product-list">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <ProductList />
+                            </Suspense>
+                        </PrivateRoute>
+                    </Content>
+                    <Footer />
+                </Layout>
+            </Layout>
+        </PrivateRoute >
+
+
+    )
+
+    return (
+        <div>
+            <Router>
+                <Switch>
+                    <Route exact path="/">
+                        <LoginContainer />
+                    </Route>
+                    <Route exact path="/login">
+                        <LoginContainer />
+                    </Route>
+
+                    <Route exact path="/dash-board">
+                        <DefaultContainer />
+                    </Route>
+                    <Route exact path="/product-list">
+                        <DefaultContainer />
+                    </Route>
+
+                </Switch>
+            </Router>
+        </div>
+    )
 })
 
 export default RouterURL;
