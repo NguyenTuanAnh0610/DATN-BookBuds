@@ -11,6 +11,21 @@ use App\Http\Controllers\UserController;
 | API Routes
 |--------------------------------------------------------------------------
 */
+// Books
+Route::get('/books', [BookController::class, 'index']);
+Route::get('/books/{id}', [BookController::class, 'show']);
+Route::post('/books', [BookController::class, 'store']);
+Route::put('/books/{id}', [BookController::class, 'update']);
+Route::delete('/books/{id}', [BookController::class, 'destroy']);
+Route::get('/books/category/{id}', [BookController::class, 'getBooksByCategory']);
+
+// Categories
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::put('/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
 
 // Shipping Addresses
 Route::get('/shipping-addresses', [ShippingAddressController::class, 'index']);
