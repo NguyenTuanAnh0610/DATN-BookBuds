@@ -10,6 +10,8 @@ import Contact from './pages/Contact';
 import ProductPage from './components/ProductPage';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectRoute';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 
 function App() {
