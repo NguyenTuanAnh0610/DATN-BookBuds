@@ -63,3 +63,9 @@ Route::get('/promotions/{id}', [PromotionController::class, 'show']);
 Route::post('/promotions', [PromotionController::class, 'store']);
 Route::put('/promotions/{id}', [PromotionController::class, 'update']);
 Route::delete('/promotions/{id}', [PromotionController::class, 'destroy']);
+
+// Reviews
+Route::post('/reviews', [ReviewController::class, 'store']);
+Route::put('/reviews/{id}', [ReviewController::class, 'update']);
+Route::delete('/reviews/{id}', [ReviewController::class, 'destroy']);
+Route::get('/reviews/book/{id}', [ReviewController::class, 'getBookReviews']);
