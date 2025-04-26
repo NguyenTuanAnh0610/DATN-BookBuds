@@ -38,10 +38,14 @@ const RouterURL = withRouter(() => {
                                 <DashBoard />
                             </Suspense>
                         </PrivateRoute>
-
                         <PrivateRoute exact path="/product-list">
                             <Suspense fallback={<LoadingScreen />}>
                                 <ProductList />
+                            </Suspense>
+                        </PrivateRoute>
+                        <PrivateRoute exact path="/category-list">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <CategoryList />
                             </Suspense>
                         </PrivateRoute>
                     </Content>
@@ -70,7 +74,9 @@ const RouterURL = withRouter(() => {
                     <Route exact path="/product-list">
                         <DefaultContainer />
                     </Route>
-
+                    <Route exact path="/category-list">
+                        <DefaultContainer />
+                    </Route>
                 </Switch>
             </Router>
         </div>

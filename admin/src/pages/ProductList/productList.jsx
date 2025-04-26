@@ -81,7 +81,14 @@ const ProductList = () => {
       }
   }
 
-
+  const handleCategoryList = async () => {
+    try {
+        const res = await categoryApi.getListCategory();
+        setCategories(res);
+    } catch (error) {
+        console.log('Failed to fetch category list:' + error);
+    }
+}
   const handleCancel = () => {
       setOpenModalCreate(false);
       setOpenModalUpdate(false);
