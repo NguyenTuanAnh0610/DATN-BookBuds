@@ -12,6 +12,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import BookDetail from './pages/BookDetail';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                         <Route path="/about" element={<About />} />
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/products" element={<ProductPage />} />
+                        <Route path="/book/:id" element={<BookDetail />} />
                     </Routes>
                     <Footer />
                 </Router>
