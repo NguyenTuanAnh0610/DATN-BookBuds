@@ -10,6 +10,8 @@ import {
 } from "react-router-dom";
 
 import Sidebar from '../components/layout/sidebar/sidebar';
+import NotFound from './../components/notFound/notFound';
+import LoadingScreen from "../components/loading/loadingScreen";
 
 const RouterURL = withRouter(() => {
     const LoginContainer = () => (
@@ -34,9 +36,13 @@ const RouterURL = withRouter(() => {
                     <Header />
                     <Content style={{ marginLeft: 230, width: 'calc(100% - 230px)', marginTop: 50 }}>
                         <PrivateRoute exact path="/dash-board">
-                            <Suspense>
+                            <Suspense fallback={<LoadingScreen />}>
                                 <DashBoard />
                             </Suspense>
+                        </PrivateRoute>
+                        
+                        <PrivateRoute exact path="/notfound">
+                            <NotFound />
                         </PrivateRoute>
                         <PrivateRoute exact path="/product-list">
                             <Suspense fallback={<LoadingScreen />}>
@@ -76,6 +82,9 @@ const RouterURL = withRouter(() => {
                     </Route>
                     <Route exact path="/category-list">
                         <DefaultContainer />
+                    </Route>
+                    <Route>
+                        <NotFound />
                     </Route>
                 </Switch>
             </Router>
