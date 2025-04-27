@@ -27,6 +27,7 @@ import {
 import { FiShoppingCart } from "react-icons/fi";
 import bookApi from "../apis/bookApi";
 import { StarIcon } from "@chakra-ui/icons";
+import reviewApi from "../apis/reviewApi";
 
 
 
@@ -38,6 +39,8 @@ const BookDetail = () => {
   const { id } = useParams();
   const [book, setBook] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState({ rating: 0, comment: "" });
   const [relatedBooks, setRelatedBooks] = useState([]);
   const toast = useToast();
   const navigate = useNavigate();
@@ -48,6 +51,10 @@ const BookDetail = () => {
         // Fetch book details
         const bookResponse = await bookApi.getDetailBook(id);
         setBook(bookResponse);
+
+        // Fetch reviews
+        const reviewsResponse = await reviewApi.getReviewsByBookId(id);
+        setReviews(reviewsResponse);
 
         // Fetch related books from same category
         if (bookResponse.categories_id) {
@@ -66,8 +73,84 @@ const BookDetail = () => {
       }
     };
     fetchData();
-
   }, [id, toast]);
+
+
+  const handleSubmitReview = async () => {
+    // Check if user is logged in
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || !user.id) {
+      toast({
+        title: "Lỗi",
+        description: "Vui lòng đăng nhập để gửi đánh giá",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      navigate('/login');
+      return;
+    }
+
+    if (newReview.rating === 0) {
+      toast({
+        title: "Lỗi",
+        description: "Vui lòng chọn số sao đánh giá",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (!newReview.comment.trim()) {
+      toast({
+        title: "Lỗi",
+        description: "Vui lòng nhập nội dung đánh giá",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    try {
+      const reviewData = {
+        book_id: parseInt(id),
+        rating: parseInt(newReview.rating),
+        comment: newReview.comment.trim(),
+        user_id: parseInt(user.id)
+      };
+
+      console.log('Submitting review:', reviewData); // Debug log
+
+      const response = await reviewApi.createReview(reviewData);
+      console.log('Review response:', response); // Debug log
+
+      // Refresh reviews
+      const reviewsResponse = await reviewApi.getReviewsByBookId(id);
+      setReviews(reviewsResponse);
+
+      // Reset form
+      setNewReview({ rating: 0, comment: "" });
+
+      toast({
+        title: "Thành công",
+        description: "Cảm ơn bạn đã đánh giá sản phẩm",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error('Review submission error:', error); // Debug log
+      toast({
+        title: "Lỗi",
+        description: error.response?.data?.message || "Không thể gửi đánh giá",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
 
   if (!book) return <Box p={5}><Text>Đang tải...</Text></Box>;
@@ -167,6 +250,7 @@ const BookDetail = () => {
                   colorScheme="blue"
                   size="lg"
                   flex={1}
+                 
                 >
                   Thêm vào giỏ
                 </Button>
@@ -174,6 +258,7 @@ const BookDetail = () => {
                   colorScheme="red"
                   size="lg"
                   flex={1}
+                 
                 >
                   Mua ngay
                 </Button>
@@ -245,7 +330,82 @@ const BookDetail = () => {
               </Text>
             </Box>
           
+              {/* Reviews */}
+              <Box>
+              <Text fontSize="xl" fontWeight="bold" mb={4}>
+                Đánh giá sản phẩm
+              </Text>
+              {reviews.length > 0 ? (
+                <VStack spacing={4} align="stretch">
+                  {reviews.map((review) => (
+                    <Box 
+                      key={review.id} 
+                      p={4} 
+                      borderWidth="1px" 
+                      borderRadius="md"
+                      bg="white"
+                      shadow="sm"
+                    >
+                      <HStack mb={2} spacing={2}>
+                        <Text fontWeight="medium">{review.user?.username || 'Người dùng ẩn danh'}</Text>
+                        <Text color="gray.500" fontSize="sm">
+                          {new Date(review.created_at).toLocaleDateString('vi-VN')}
+                        </Text>
+                      </HStack>
+                      <HStack mb={3}>
+                        {[...Array(5)].map((_, i) => (
+                          <StarIcon
+                            key={i}
+                            color={i < review.rating ? "yellow.400" : "gray.300"}
+                          />
+                        ))}
+                      </HStack>
+                      <Text color="gray.700">{review.comment}</Text>
+                    </Box>
+                  ))}
+                </VStack>
+              ) : (
+                <Text color="gray.500">Chưa có đánh giá nào.</Text>
+              )}
 
+              {/* Add Review Form */}
+              <Box mt={6} p={4} borderWidth="1px" borderRadius="md" bg="gray.50">
+                <Text fontSize="lg" fontWeight="bold" mb={4}>
+                  Viết đánh giá
+                </Text>
+                <VStack spacing={4} align="stretch">
+                  <HStack spacing={2}>
+                    {[...Array(5)].map((_, i) => (
+                      <StarIcon
+                        key={i}
+                        cursor="pointer"
+                        color={i < newReview.rating ? "yellow.400" : "gray.300"}
+                        onClick={() => setNewReview({ ...newReview, rating: i + 1 })}
+                        w={6}
+                        h={6}
+                        _hover={{ transform: "scale(1.2)" }}
+                        transition="transform 0.2s"
+                      />
+                    ))}
+                  </HStack>
+                  <Textarea
+                    placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..."
+                    value={newReview.comment}
+                    onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                    bg="white"
+                  />
+                  <Button 
+                    colorScheme="blue" 
+                    alignSelf="flex-start"
+                    onClick={handleSubmitReview}
+                    leftIcon={<StarIcon />}
+                  >
+                    Gửi đánh giá
+                  </Button>
+                </VStack>
+              </Box>
+            </Box>
+            
             {/* Related Books */}
             <Box mt={8}>
               <Text fontSize="xl" fontWeight="bold" mb={4}>
