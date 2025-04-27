@@ -23,6 +23,10 @@ const userApi = {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
     },
+    changePassword(data) {
+        const url = '/users/change-password';
+        return axiosClient.post(url, data);
+    },
 
     
     

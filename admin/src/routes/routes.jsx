@@ -13,6 +13,15 @@ import Sidebar from '../components/layout/sidebar/sidebar';
 import NotFound from './../components/notFound/notFound';
 import LoadingScreen from "../components/loading/loadingScreen";
 
+
+
+const ChangePassword = lazy(() => {
+    return Promise.all([
+        import('../pages/ChangePassword/changePassword'),
+        new Promise(resolve => setTimeout(resolve, 0))
+    ])
+        .then(([moduleExports]) => moduleExports);
+});
 const RouterURL = withRouter(() => {
     const LoginContainer = () => (
         <div>
@@ -54,6 +63,11 @@ const RouterURL = withRouter(() => {
                                 <CategoryList />
                             </Suspense>
                         </PrivateRoute>
+                        <PrivateRoute exact path="/change-password/:id">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <ChangePassword />
+                            </Suspense>
+                        </PrivateRoute>
                     </Content>
                     <Footer />
                 </Layout>
@@ -81,6 +95,9 @@ const RouterURL = withRouter(() => {
                         <DefaultContainer />
                     </Route>
                     <Route exact path="/category-list">
+                        <DefaultContainer />
+                    </Route>
+                    <Route exact path="/change-password/:id">
                         <DefaultContainer />
                     </Route>
                     <Route>

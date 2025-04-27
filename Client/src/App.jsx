@@ -13,6 +13,7 @@ import ProtectedRoute from './components/ProtectRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import BookDetail from './pages/BookDetail';
+import ChangePassword from './pages/ChangePassword';
 
 
 function App() {
@@ -32,6 +33,11 @@ function App() {
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/products" element={<ProductPage />} />
                         <Route path="/book/:id" element={<BookDetail />} />
+                        <Route path="/change-password" element={
+                            <PrivateRoute>
+                                <ChangePassword />
+                            </PrivateRoute>
+                        } />
                     </Routes>
                     <Footer />
                 </Router>
