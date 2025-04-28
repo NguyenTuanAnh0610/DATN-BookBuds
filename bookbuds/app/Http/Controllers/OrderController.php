@@ -81,6 +81,16 @@ class OrderController extends Controller
             $book->save();
         }
 
+        $order->load(['orderItems.book', 'user', 'shippingAddress']);
+
+        // Send confirmation email
+        try {
+            Mail::to($order->user->email)->send(new OrderConfirmation($order));
+        } catch (\Exception $e) {
+            // Log the error but don't stop the order creation
+            \Log::error('Failed to send order confirmation email: ' . $e->getMessage());
+        }
+
         return response()->json($order->load(['orderItems.book']), 201);
     }
 
