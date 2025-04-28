@@ -13,6 +13,7 @@ import Sidebar from '../components/layout/sidebar/sidebar';
 import NotFound from './../components/notFound/notFound';
 import LoadingScreen from "../components/loading/loadingScreen";
 import ReviewsManagement from "../pages/Review/review";
+import PromotionsManagement from "../pages/PromotionsManagement/promotionsManagement";
 
 
 
@@ -69,6 +70,11 @@ const RouterURL = withRouter(() => {
                                 <ChangePassword />
                             </Suspense>
                         </PrivateRoute>
+                        <PrivateRoute exact path="/promotions-management">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <PromotionsManagement />
+                            </Suspense>
+                        </PrivateRoute>
                         <PrivateRoute exact path="/reviews">
                             <Suspense fallback={<LoadingScreen />}>
                                 <ReviewsManagement />
@@ -104,6 +110,9 @@ const RouterURL = withRouter(() => {
                         <DefaultContainer />
                     </Route>
                     <Route exact path="/change-password/:id">
+                        <DefaultContainer />
+                    </Route>
+                    <Route exact path="/promotions-management">
                         <DefaultContainer />
                     </Route>
                     <Route exact path="/reviews">
