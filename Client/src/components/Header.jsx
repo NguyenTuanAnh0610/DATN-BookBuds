@@ -30,11 +30,23 @@ const Header = () => {
     };
 
     const userMenu = [
-       
+        {
+            label: 'Thông tin cá nhân',
+            key: 'profile',
+            icon: <FiUser size={16} />,
+            onClick: () => navigate('/profile')
+        },
+    
+        {
+            label: 'Đổi mật khẩu',
+            key: 'change-password',
+            icon: <FiLock size={16} />,
+            onClick: () => navigate('/change-password')
+        },
         {
             label: 'Đăng xuất',
             key: 'logout',
-            icon: <FiLogOut />,
+            icon: <FiLogOut size={16} />,
             onClick: handleLogout
         }
     ];

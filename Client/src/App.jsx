@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { Profiler } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -16,6 +16,8 @@ import BookDetail from './pages/BookDetail';
 import ChangePassword from './pages/ChangePassword';
 import Cart from './pages/Cart';
 import { CartProvider } from './context/CartContext';
+import Profile from './pages/Profile';
+
 
 
 function App() {
@@ -31,6 +33,11 @@ function App() {
                             <ProtectedRoute>
                                 <Login />
                             </ProtectedRoute>
+                        } />
+                        <Route path="/profile" element={
+                            <PrivateRoute>
+                                <Profile />
+                            </PrivateRoute>
                         } />
                         <Route path="/register" element={<Register />} />
                         <Route path="/about" element={<About />} />
