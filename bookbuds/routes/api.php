@@ -50,12 +50,14 @@ Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::get('/users/search', [UserController::class, 'search']);
 
 // Cart routes
-
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart', [CartController::class, 'addToCart']);
     Route::put('/cart/{id}', [CartController::class, 'updateQuantity']);
     Route::delete('/cart/{id}', [CartController::class, 'removeFromCart']);
     Route::delete('/cart', [CartController::class, 'clearCart']);
+    Route::post('/cart/check-stock', [CartController::class, 'checkStock']);
+});
     
 // Promotions
 Route::get('/promotions', [PromotionController::class, 'index']);
