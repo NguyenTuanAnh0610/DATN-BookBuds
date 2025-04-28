@@ -15,11 +15,14 @@ import Register from './pages/Register';
 import BookDetail from './pages/BookDetail';
 import ChangePassword from './pages/ChangePassword';
 import Cart from './pages/Cart';
+import { CartProvider } from './context/CartContext';
 
 
 function App() {
     return (
+        <CartProvider>
         <AuthProvider>
+            
              <Router>
                     <Header />
                     <Routes>
@@ -44,7 +47,7 @@ function App() {
                     <Footer />
                 </Router>
         </AuthProvider>
-           
+        </CartProvider>
         
                 
     );
