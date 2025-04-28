@@ -25,7 +25,7 @@ class CartController extends Controller
             'total' => $total
         ]);
     }
-    
+
     public function addToCart(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -34,8 +34,26 @@ class CartController extends Controller
         ]);
 
         // Kiểm tra số lượng tồn kho
-        
+        $book = Book::findOrFail($validated['book_id']);
+        if ($book->stock_quantity < $validated['quantity']) {
+            return response()->json([
+                'message' => "Sản phẩm không đủ số lượng trong kho. Chỉ còn {$book->stock_quantity} sản phẩm."
+            ], 400);
+        }
+
+        $cartItem = Cart::updateOrCreate(
+            [
+                'user_id' => Auth::id(),
+                'book_id' => $validated['book_id']
+            ],
+            [
+                'quantity' => \DB::raw('quantity + ' . $validated['quantity'])
+            ]
+        );
+
+        return response()->json($cartItem->load('book'), 201);
     }
+
     public function updateQuantity(Request $request, int $id): JsonResponse
     {
         $validated = $request->validate([
@@ -46,6 +64,14 @@ class CartController extends Controller
             ->findOrFail($id);
 
         // Kiểm tra số lượng tồn kho
+        if ($cartItem->book->stock_quantity < $validated['quantity']) {
+            return response()->json([
+                'message' => "Sản phẩm không đủ số lượng trong kho. Chỉ còn {$cartItem->book->stock_quantity} sản phẩm."
+            ], 400);
+        }
+
+        $cartItem->update($validated);
+        return response()->json($cartItem->load('book'));
     }
 
     public function removeFromCart(int $id): JsonResponse
@@ -57,7 +83,11 @@ class CartController extends Controller
         return response()->json(null, 204);
     }
 
-    
+    public function clearCart(): JsonResponse
+    {
+        Cart::where('user_id', Auth::id())->delete();
+        return response()->json(null, 204);
+    }
 
     public function checkStock(): JsonResponse
     {
@@ -77,9 +107,11 @@ class CartController extends Controller
                 ];
             }
         }
+        
         return response()->json([
             'success' => count($outOfStockItems) === 0,
             'outOfStockItems' => $outOfStockItems
         ]);
     }
 }
+
