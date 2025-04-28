@@ -26,10 +26,10 @@ import {
 } from "@chakra-ui/react";
 import { FiShoppingCart } from "react-icons/fi";
 import bookApi from "../apis/bookApi";
-import { StarIcon } from "@chakra-ui/icons";
 import reviewApi from "../apis/reviewApi";
-
-
+import { StarIcon } from "@chakra-ui/icons";
+import { useCart } from '../context/CartContext';
+import userApi from "../apis/userApi";
 
 const formatPrice = (price) => {
   return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -43,6 +43,8 @@ const BookDetail = () => {
   const [newReview, setNewReview] = useState({ rating: 0, comment: "" });
   const [relatedBooks, setRelatedBooks] = useState([]);
   const toast = useToast();
+  const { addToCart } = useCart();
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -73,7 +75,21 @@ const BookDetail = () => {
       }
     };
     fetchData();
+
+    userApi.getAllUsers().then((response) => {
+      setUsers(response);
+    });
   }, [id, toast]);
+
+  const handleAddToCart = () => {
+    addToCart(book, quantity);
+   
+  };
+
+  const handleBuyNow = () => {
+    addToCart(book, quantity);
+    navigate('/cart');
+  };
 
 
   const handleSubmitReview = async () => {
@@ -151,7 +167,6 @@ const BookDetail = () => {
       });
     }
   };
-
 
   if (!book) return <Box p={5}><Text>Đang tải...</Text></Box>;
 
@@ -250,7 +265,7 @@ const BookDetail = () => {
                   colorScheme="blue"
                   size="lg"
                   flex={1}
-                 
+                  onClick={handleAddToCart}
                 >
                   Thêm vào giỏ
                 </Button>
@@ -258,7 +273,7 @@ const BookDetail = () => {
                   colorScheme="red"
                   size="lg"
                   flex={1}
-                 
+                  onClick={handleBuyNow}
                 >
                   Mua ngay
                 </Button>
@@ -329,9 +344,9 @@ const BookDetail = () => {
                 {book.description}
               </Text>
             </Box>
-          
-              {/* Reviews */}
-              <Box>
+
+            {/* Reviews */}
+            <Box>
               <Text fontSize="xl" fontWeight="bold" mb={4}>
                 Đánh giá sản phẩm
               </Text>
@@ -405,7 +420,7 @@ const BookDetail = () => {
                 </VStack>
               </Box>
             </Box>
-            
+
             {/* Related Books */}
             <Box mt={8}>
               <Text fontSize="xl" fontWeight="bold" mb={4}>

@@ -14,6 +14,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import BookDetail from './pages/BookDetail';
 import ChangePassword from './pages/ChangePassword';
+import Cart from './pages/Cart';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/about" element={<About />} />
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/products" element={<ProductPage />} />
+                        <Route path="/cart" element={<Cart />} />
                         <Route path="/book/:id" element={<BookDetail />} />
                         <Route path="/change-password" element={
                             <PrivateRoute>
