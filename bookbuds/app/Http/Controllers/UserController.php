@@ -118,6 +118,57 @@ class UserController extends Controller
         $users = User::where('username', 'like', "%{$username}%")->get();
         return response()->json($users);
     }
+    
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'currentPassword' => 'required',
+            'newPassword' => 'required|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = Auth::user();
+
+        // Kiểm tra mật khẩu hiện tại
+        if (!Hash::check($request->currentPassword, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mật khẩu hiện tại không đúng'
+            ], 401);
+        }
+
+        // Cập nhật mật khẩu mới
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Thay đổi mật khẩu thành công'
+        ]);
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email'
+        ], [
+            'email.exists' => 'Email không tồn tại trong hệ thống'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
+    }
 
 
 }
