@@ -27,7 +27,10 @@ const userApi = {
         const url = '/users/change-password';
         return axiosClient.post(url, data);
     },
-   
+    forgotPassword(email) {
+        const url = '/forgot-password';
+        return axiosClient.post(url, { email });
+    },
 
     
     

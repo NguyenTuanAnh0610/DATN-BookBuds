@@ -12,12 +12,20 @@ import {
     Input,
     Stack,
     useToast,
-    Image
+    Image,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton
 } from '@chakra-ui/react';
 import userApi from '../apis/userApi';
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
     const toast = useToast();
@@ -89,7 +97,25 @@ const Login = () => {
                 />
             </Flex>
 
-           
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Quên mật khẩu</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <FormControl id="email" isRequired>
+                            <FormLabel>Email</FormLabel>
+                            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Nhập email của bạn" />
+                        </FormControl>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="blue" onClick={handleForgotPassword}>
+                            OK
+                        </Button>
+                        <Button variant="ghost" onClick={() => setIsModalOpen(false)}>Hủy</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Stack>
     );
 };
