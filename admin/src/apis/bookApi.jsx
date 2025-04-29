@@ -21,13 +21,7 @@ const bookApi = {
         const url = '/books/' + id;
         return axiosClient.delete(url);
     },
-    searchBook(name) {
-        const params = {
-            name: name.target.value
-        }
-        const url = '/books/searchByName';
-        return axiosClient.get(url, { params });
-    },
+    
 }
 
 export default bookApi; 

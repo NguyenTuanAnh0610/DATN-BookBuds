@@ -73,33 +73,7 @@ class ShippingAddressController extends Controller
         return response()->json(null, 204);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/shipping-addresses/user/{id}",
-     *     summary="Get shipping addresses by user ID",
-     *     description="Returns a list of shipping addresses for a specific user",
-     *     tags={"Shipping Addresses"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="User ID",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="List of shipping addresses",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/ShippingAddress")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="User not found"
-     *     )
-     * )
-     */
+   
     public function getShippingAddressesByUserId(int $id): JsonResponse
     {
         $addresses = ShippingAddress::where('user_id', $id)->get();

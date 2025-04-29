@@ -27,10 +27,7 @@ const userApi = {
         const url = '/users/change-password';
         return axiosClient.post(url, data);
     },
-    getUserProfile() {
-        const url = '/users/profile';
-        return axiosClient.get(url);
-    },
+   
 
     
     

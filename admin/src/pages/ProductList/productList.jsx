@@ -52,25 +52,7 @@ const ProductList = () => {
       setOpenModalCreate(true);
   };
 
-  const createBook = async (bookData) => {
-      try {
-          const response = await bookApi.createBook(bookData);
-          if (response) {
-              notification["success"]({
-                  message: `Thông báo`,
-                  description: 'Tạo sách thành công',
-              });
-              handleProductList();
-              setOpenModalCreate(false);
-          }
-      } catch (error) {
-          notification["error"]({
-              message: `Thông báo`,
-              description: 'Tạo sách thất bại',
-          });
-      }
-  }
-
+ 
   const handleProductList = async () => {
       try {
           const res = await bookApi.getListBooks();
@@ -229,21 +211,6 @@ const ProductList = () => {
       }
   };
 
-  const handleChangeImage = async (e) => {
-      setLoading(true);
-      const file = e.target.files[0];
-      if (file) {
-          const storageRef = ref(storage, `images/${file.name}`);
-          try {
-              await uploadBytes(storageRef, file);
-              const url = await getDownloadURL(storageRef);
-              setImage(url);
-          } catch (error) {
-              console.error("Error uploading file:", error);
-          }
-      }
-      setLoading(false);
-  };
 
   const handleSearch = (value) => {
       setSearchTerm(value);
@@ -510,7 +477,7 @@ const ProductList = () => {
                           label="Hình ảnh"
                           rules={[{ required: true, message: 'Vui lòng chọn hình ảnh!' }]}
                       >
-                          <input type="file" onChange={handleChangeImage}
+                          <input type="file" 
                               id="avatar" name="file"
                               accept="image/png, image/jpeg" />
                       </Form.Item>
@@ -673,7 +640,7 @@ const ProductList = () => {
                           name="image"
                           label="Hình ảnh"
                       >
-                          <input type="file" onChange={handleChangeImage}
+                          <input type="file" 
                               id="avatar" name="file"
                               accept="image/png, image/jpeg" />
                       </Form.Item>
