@@ -41,7 +41,10 @@ const userApi = {
         const url = '/register';
         return axiosClient.post(url, data);
     },
-
+    forgotPassword: (data) => {
+        const url = '/forgot-password';
+        return axiosClient.post(url, data);
+    },
     
     
 }

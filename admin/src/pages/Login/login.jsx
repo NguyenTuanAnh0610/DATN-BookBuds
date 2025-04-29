@@ -8,6 +8,8 @@ import "./login.css";
 const Login = () => {
 
   const [isLogin, setLogin] = useState(true);
+  const [forgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false);
+  const [forgotPasswordForm] = Form.useForm(); 
 
   let history = useHistory();
 
@@ -48,9 +50,40 @@ const Login = () => {
       });
   }
 
-  
+  const showForgotPasswordModal = () => {
+    setForgotPasswordModalVisible(true);
+  };
 
- 
+  const handleForgotPasswordCancel = () => {
+    setForgotPasswordModalVisible(false);
+    forgotPasswordForm.resetFields();
+  };
+
+  const handleForgotPasswordSubmit = async () => {
+    try {
+      const values = await forgotPasswordForm.validateFields();
+      await userApi.forgotPassword({ email: values.email });
+      notification.success({
+        message: 'Thành công',
+        description: 'Mật khẩu mới đã được gửi đến email của bạn.',
+      });
+      setForgotPasswordModalVisible(false);
+      forgotPasswordForm.resetFields();
+    } catch (error) {
+      if (error.response?.data?.message) {
+        notification.error({
+          message: 'Lỗi',
+          description: error.response.data.message,
+        });
+      } else {
+        notification.error({
+          message: 'Lỗi',
+          description: 'Đã có lỗi xảy ra khi xử lý yêu cầu.',
+        });
+      }
+    }
+  };
+
   const handleLink = () => {
     history.push("/register");
   }
@@ -138,14 +171,48 @@ const Login = () => {
             </Form.Item>
 
             <Form.Item style={{ textAlign: 'center' }}>
-              <Button type="link" >
+              <Button type="link" onClick={showForgotPasswordModal}>
                 Quên mật khẩu?
               </Button>
             </Form.Item>
           </Form>
         </div>
 
-        
+        <Modal
+          title="Quên mật khẩu"
+          visible={forgotPasswordModalVisible}
+          onCancel={handleForgotPasswordCancel}
+          footer={[
+            <Button key="back" onClick={handleForgotPasswordCancel}>
+              Hủy
+            </Button>,
+            <Button key="submit" type="primary" onClick={handleForgotPasswordSubmit}>
+              Gửi mật khẩu mới
+            </Button>,
+          ]}
+        >
+          <Form
+            form={forgotPasswordForm}
+            layout="vertical"
+          >
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập email',
+                },
+                {
+                  type: 'email',
+                  message: 'Email không hợp lệ!',
+                }
+              ]}
+            >
+              <Input prefix={<MailOutlined />} placeholder="Nhập email của bạn" />
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     </div>
   );
