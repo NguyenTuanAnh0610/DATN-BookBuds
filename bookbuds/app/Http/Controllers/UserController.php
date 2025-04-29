@@ -168,6 +168,35 @@ class UserController extends Controller
                 'message' => $validator->errors()->first()
             ], 422);
         }
+
+        try {
+            $user = User::where('email', $request->email)->first();
+            
+            // Tạo mật khẩu mới ngẫu nhiên
+            $newPassword = Str::random(8);
+            $user->password = Hash::make($newPassword);
+            $user->save();
+
+            // Gửi email chứa mật khẩu mới
+            Mail::send('emails.forgot-password', [
+                'user' => $user,
+                'newPassword' => $newPassword
+            ], function($message) use ($user) {
+                $message->to($user->email)
+                        ->subject('Mật khẩu mới - BookBuds');
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Mật khẩu mới đã được gửi đến email của bạn'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi xử lý yêu cầu'
+            ], 500);
+        }
     }
 
 
