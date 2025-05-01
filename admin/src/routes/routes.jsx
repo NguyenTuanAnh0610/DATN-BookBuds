@@ -14,13 +14,16 @@ import NotFound from './../components/notFound/notFound';
 import LoadingScreen from "../components/loading/loadingScreen";
 import ReviewsManagement from "../pages/Review/review";
 import PromotionsManagement from "../pages/PromotionsManagement/promotionsManagement";
+import OrderList from "../pages/OrderList/orderList";
+import OrderDetail from "../pages/OrderDetail/OrderDetail";
+import AccountManagement from './../pages/AccountManagement/accountManagement';
 
 
 
 const ChangePassword = lazy(() => {
     return Promise.all([
         import('../pages/ChangePassword/changePassword'),
-        new Promise(resolve => setTimeout(resolve, 0))
+new Promise(resolve => setTimeout(resolve, 0))
     ])
         .then(([moduleExports]) => moduleExports);
 });
@@ -70,9 +73,25 @@ const RouterURL = withRouter(() => {
                                 <ChangePassword />
                             </Suspense>
                         </PrivateRoute>
+                        <PrivateRoute exact path="/order-list">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <OrderList />
+                            </Suspense>
+                        </PrivateRoute>
+                        <PrivateRoute exact path="/order-details/:id">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <OrderDetail />
+                            </Suspense>
+                        </PrivateRoute>
                         <PrivateRoute exact path="/promotions-management">
                             <Suspense fallback={<LoadingScreen />}>
                                 <PromotionsManagement />
+                            </Suspense>
+                        </PrivateRoute>
+                        
+                        <PrivateRoute exact path="/account-management">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <AccountManagement />
                             </Suspense>
                         </PrivateRoute>
                         <PrivateRoute exact path="/reviews">
@@ -115,6 +134,12 @@ const RouterURL = withRouter(() => {
                     <Route exact path="/promotions-management">
                         <DefaultContainer />
                     </Route>
+                    
+                        <PrivateRoute exact path="/account-management">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <AccountManagement />
+                            </Suspense>
+                        </PrivateRoute>
                     <Route exact path="/reviews">
                         <DefaultContainer />
                     </Route>
