@@ -31,7 +31,7 @@ const RouterURL = withRouter(() => {
     const LoginContainer = () => (
         <div>
             <PublicRoute exact path="/">
-                <Suspense>
+                <Suspense fallback={<LoadingScreen />}>
                     <Login />
                 </Suspense>
             </PublicRoute>
@@ -58,6 +58,7 @@ const RouterURL = withRouter(() => {
                         <PrivateRoute exact path="/notfound">
                             <NotFound />
                         </PrivateRoute>
+
                         <PrivateRoute exact path="/product-list">
                             <Suspense fallback={<LoadingScreen />}>
                                 <ProductList />
@@ -68,11 +69,7 @@ const RouterURL = withRouter(() => {
                                 <CategoryList />
                             </Suspense>
                         </PrivateRoute>
-                        <PrivateRoute exact path="/change-password/:id">
-                            <Suspense fallback={<LoadingScreen />}>
-                                <ChangePassword />
-                            </Suspense>
-                        </PrivateRoute>
+                        
                         <PrivateRoute exact path="/order-list">
                             <Suspense fallback={<LoadingScreen />}>
                                 <OrderList />
@@ -83,6 +80,13 @@ const RouterURL = withRouter(() => {
                                 <OrderDetail />
                             </Suspense>
                         </PrivateRoute>
+
+                        <PrivateRoute exact path="/change-password/:id">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <ChangePassword />
+                            </Suspense>
+                        </PrivateRoute>
+                        
                         <PrivateRoute exact path="/promotions-management">
                             <Suspense fallback={<LoadingScreen />}>
                                 <PromotionsManagement />
@@ -92,6 +96,12 @@ const RouterURL = withRouter(() => {
                         <PrivateRoute exact path="/account-management">
                             <Suspense fallback={<LoadingScreen />}>
                                 <AccountManagement />
+                            </Suspense>
+                        </PrivateRoute>
+                        
+                        <PrivateRoute exact path="/chat">
+                            <Suspense fallback={<LoadingScreen />}>
+                                <Chat />
                             </Suspense>
                         </PrivateRoute>
                         <PrivateRoute exact path="/reviews">
@@ -110,7 +120,7 @@ const RouterURL = withRouter(() => {
 
     return (
         <div>
-            <Router>
+             <Router>
                 <Switch>
                     <Route exact path="/">
                         <LoginContainer />
@@ -118,8 +128,10 @@ const RouterURL = withRouter(() => {
                     <Route exact path="/login">
                         <LoginContainer />
                     </Route>
-
                     <Route exact path="/dash-board">
+                        <DefaultContainer />
+                    </Route>
+                    <Route exact path="/change-password/:id">
                         <DefaultContainer />
                     </Route>
                     <Route exact path="/product-list">
@@ -128,18 +140,21 @@ const RouterURL = withRouter(() => {
                     <Route exact path="/category-list">
                         <DefaultContainer />
                     </Route>
-                    <Route exact path="/change-password/:id">
+                    <Route exact path="/order-list">
+                        <DefaultContainer />
+                    </Route>
+                    <Route exact path="/order-details/:id">
                         <DefaultContainer />
                     </Route>
                     <Route exact path="/promotions-management">
                         <DefaultContainer />
                     </Route>
-                    
-                        <PrivateRoute exact path="/account-management">
-                            <Suspense fallback={<LoadingScreen />}>
-                                <AccountManagement />
-                            </Suspense>
-                        </PrivateRoute>
+                    <Route exact path="/account-management">
+                        <DefaultContainer />
+                    </Route>
+                    <Route exact path="/chat">
+                        <DefaultContainer />
+                    </Route>
                     <Route exact path="/reviews">
                         <DefaultContainer />
                     </Route>
