@@ -36,7 +36,12 @@ const Header = () => {
             icon: <FiUser size={16} />,
             onClick: () => navigate('/profile')
         },
-    
+        {
+            label: 'Đơn hàng của tôi',
+            key: 'orders',
+            icon: <FiShoppingBag />,
+            onClick: () => navigate('/orders')
+        },
         {
             label: 'Đổi mật khẩu',
             key: 'change-password',

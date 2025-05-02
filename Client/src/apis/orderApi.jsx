@@ -23,7 +23,13 @@ const orderApi = {
         const url = "/orders/" + id;
         return axiosClient.delete(url);
     },
-
+    searchOrder(name) {
+        const params = {
+            name: name.target.value
+        }
+        const url = '/orders/searchByName';
+        return axiosClient.get(url, { params });
+    },
    
 
     // API lấy danh sách đơn hàng của người dùng theo userId

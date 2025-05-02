@@ -20,6 +20,7 @@ import Profile from './pages/Profile';
 import Success from './pages/Success';
 import Checkout from './pages/Checkout';
 import Chat from './components/Chat';
+import OrderHistory from './pages/OrderHistory';
 
 
 
@@ -59,6 +60,12 @@ function App() {
                     } />
                     <Route path="/success" element={<Success />} />                
                 
+
+                    <Route path="/orders" element={
+                            <PrivateRoute>
+                                <OrderHistory />
+                            </PrivateRoute>
+                        } />
                 </Routes>
                 <Footer />
                 {user && <Chat />}
